@@ -24,24 +24,42 @@ namespace CourseProject
                 num+=1;
             }
         }
-        public void test(string procName)
+
+        public void kill(int id)
         {
-            foreach (Process process in getAllProcesses().Where(x => x.ProcessName == procName))
+            try
             {
-                using (PerformanceCounter pcProcess = new PerformanceCounter("Process", "% Processor Time", process.ProcessName))
-                using (PerformanceCounter memProcess = new PerformanceCounter("Memory", "Available MBytes"))
+                Process.GetProcessById(id).Kill();
+                Console.WriteLine("Process with id = {0} is killed", id);
+            }
+            catch
+            {
+                Console.WriteLine("Error trying to kill process");
+            }
+        }
+        public void killByName(string name)
+        {
+            int counter = 0;
+            foreach (Process process in getAllProcesses().Where(x => x.ProcessName == name))
+            {
+                try
                 {
-                    pcProcess.NextValue();
-                    Thread.Sleep(100);
-                    Console.WriteLine("");
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    float cpuUseage = pcProcess.NextValue();
-                    Console.WriteLine("Process: '{0}' CPU Usage: {1}%", process.ProcessName, cpuUseage);
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    float memUseage = memProcess.NextValue();
-                    Console.WriteLine("Process: '{0}' RAM Free: {1}MB", process.ProcessName, memUseage);
+                    process.Kill();
+                    counter += 1;
+                } catch
+                {
+                    Console.WriteLine("Error trying to kill process {0}", name);
                 }
             }
-        } 
+            Console.WriteLine("{0} processes with name {1} are killed", counter, name);
+        }
+        public void info()
+        {
+            using (PerformanceCounter memProcess = new PerformanceCounter("Memory", "Available MBytes"))
+            {
+                float memUseage = memProcess.NextValue();
+                Console.WriteLine(" RAM Free: {0}MB", memUseage);
+            }
+        }
     }
 }
