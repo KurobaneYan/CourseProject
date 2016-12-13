@@ -88,7 +88,9 @@ namespace CourseProject
             Console.Clear();
             Console.WriteLine("Help:");
             Console.WriteLine("list - prints all processes");
+            Console.WriteLine("clear - clears console");
             Console.WriteLine("kill [process name] - kills process by name");
+            Console.WriteLine("kill id [process id] - kills process by id");
             Console.WriteLine("system info - prints information obout yout pc");
             Console.WriteLine("help - prints this help");
             Console.WriteLine("exit - quit");
